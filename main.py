@@ -68,7 +68,7 @@ meetings = {extended_properties_private(event, 'portlandCalendarId'): event for 
 
 async def get_events_from_date(date: datetime):
     date_str = date.strftime("%Y-%m-%d")
-    url = f"{CITY_API_BASE_URL}/?$filter=+startDateTime+ge+{date_str}&$orderby=startDateTime"
+    url = f"{CITY_API_BASE_URL}/Events?$filter=+startDateTime+ge+{date_str}&$orderby=startDateTime"
 
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
