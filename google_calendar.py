@@ -63,9 +63,6 @@ def upsert_event(calendar_id: str, summary: str, start: datetime, end: datetime,
         },
         'reminders': {
             'useDefault': False,
-            'overrides': [
-                {'method': 'popup', 'minutes': 30},
-            ],
         },
         'extendedProperties': {
             'private': {
