@@ -131,7 +131,10 @@ async def build_event(event: dict) -> Event:
     _id = str(event['id'])
     name = event['eventName']
     logger.info(f"Raw event time: {event['startDateTime']}")
-    start_time = datetime.strptime(event['startDateTime'], '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=pytz.utc)
+    utc = pytz.utc
+    eastern = pytz.timezone("America/New_York")
+    start_time = datetime.strptime(event['startDateTime'], '%Y-%m-%dT%H:%M:%SZ')
+    start_time = utc.localize(start_time).astimezone(eastern)  # Convert UTC → ET
     end_time = start_time + timedelta(hours=2)
     logger.info(f"processing: '{name}' {start_time} - {end_time}")
     existing_meeting = meetings.get((name, start_time.isoformat()))
