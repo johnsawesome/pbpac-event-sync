@@ -131,14 +131,14 @@ async def build_event(event: dict) -> Event:
     _id = str(event['id'])
     name = event['eventName']
     logger.info(f"Raw event time: {event['startDateTime']}")
-    utc = pytz.utc
     eastern = pytz.timezone("America/New_York")
-    # Parse the timestamp as a naive datetime object
+    # Parse the raw event time (which we are assuming is in EST)
     start_time = datetime.strptime(event['startDateTime'], '%Y-%m-%dT%H:%M:%SZ')
-    # Explicitly set the timezone to UTC first
-    start_time = start_time.replace(tzinfo=utc)
-    # Convert from UTC to Eastern Time
+    # Manually attach the EST timezone (assuming the raw event time is already in EST)
+    start_time = eastern.localize(start_time)  # This ensures it's treated as Eastern Time
+    # Now convert this time to the Google Calendar format (ensure time zone is attached)
     start_time = start_time.astimezone(eastern)
+    # Set the event details (same for the end time)
     end_time = start_time + timedelta(hours=2)
     logger.info(f"processing: '{name}' {start_time} - {end_time}")
     existing_meeting = meetings.get((name, start_time.isoformat()))
