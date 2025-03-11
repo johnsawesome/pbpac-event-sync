@@ -55,11 +55,11 @@ def upsert_event(calendar_id: str, summary: str, start: datetime, end: datetime,
         'summary': summary,
         'start': {
             'dateTime': start.strftime('%Y-%m-%dT%H:%M:%S%z'),
-            'timeZone': 'America/New_York',
+            'timeZone': 'America/New_York',  # Explicitly set the timezone to Eastern Time
         },
         'end': {
             'dateTime': end.strftime('%Y-%m-%dT%H:%M:%S%z'),
-            'timeZone': 'America/New_York',
+            'timeZone': 'America/New_York',  # Explicitly set the timezone to Eastern Time
         },
         'reminders': {
             'useDefault': False,
