@@ -130,9 +130,9 @@ async def get_agenda_summary(agenda_text: str):
 async def build_event(event: dict) -> Event:
     _id = str(event['id'])
     name = event['eventName']
+    tz = pytz.timezone("America/New_York")
     start_time = datetime.strptime(event['startDateTime'], '%Y-%m-%dT%H:%M:%SZ')
-    tz = timezone(pytz.timezone("America/New_York").utcoffset(datetime.utcnow()))
-    start_time = start_time.replace(tzinfo=tz)
+    start_time = start_time.replace(tzinfo=timezone.utc).astimezone(tz)
     end_time = start_time + timedelta(hours=2)
     logger.info(f"processing: '{name}' {start_time} - {end_time}")
     existing_meeting = meetings.get((name, start_time.isoformat()))
